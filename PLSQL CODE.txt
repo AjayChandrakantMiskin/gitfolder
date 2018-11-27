@@ -1,0 +1,74 @@
+select * from school_info;
+
+
+create or replace procedure proc_stu_id
+is
+s_name varchar2(20);
+begin
+select Student_name into s_name from school_info
+where student_id = 4;
+dbms_output.put_line('The name of student of id 4 is :' ||s_name);
+end proc_stu_id;
+
+begin
+proc_stu_id;
+end;
+/
+
+
+create or replace procedure proc_stu_id(vid int)
+is
+s_name varchar2(20);
+begin
+select Student_name into s_name from school_info
+where student_id = vid;
+dbms_output.put_line('The name of student id '||  vid  || ' is '  || s_name);
+end proc_stu_id;
+
+
+begin
+proc_stu_id (3);
+end;
+/
+
+select * from emp;
+
+
+create or replace procedure proc_emp_job(vjob emp.job % type)
+is
+job_cnt int;
+begin
+select count(*) into job_cnt from emp
+where job = vjob;
+dbms_output.put_line(' Given designation : '  ||  vjob);
+dbms_output.put_line(' Number of emps are : '  || job_cnt);
+end proc_emp_job;
+
+begin
+proc_emp_job('ANALYST');
+end;
+/
+
+--------------------------------------------------------
+
+select * from emp;
+
+create or replace procedure emp_cur1
+is
+cursor c2 is select ename,job from emp;
+vname emp.ename%type;
+vjob emp.job%type;
+begin
+open c2;
+loop
+fetch c2 into vname,vjob ;
+exit when c2%notfound;
+dbms_output.put_line(vname ||' '||vjob);
+end loop;
+end emp_cur1;
+/
+
+begin
+emp_cur1;
+end;
+/
